@@ -16,3 +16,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/news', function() {
+    echo 'news page!';
+});
+
+Route::get('/trang-chu/product/{id?}', function($id = 1) {
+    echo $id;
+});
+
+Route::get('text',function() {
+    return view('text');
+});
+Route::get('sinh-vien', function() {
+    return view('sinhvien/sinhvien');
+});
