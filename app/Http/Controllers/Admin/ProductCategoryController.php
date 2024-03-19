@@ -7,14 +7,18 @@ use Illuminate\Http\Request;
 
 class ProductCategoryController extends Controller
 {
-    public function index() {
-         //cách 1
-         $name = 'abbc';
-         $title = 'gôt_hoem';
-        // return view('admin.pages.product_category.index',
-        //['name' => $name,
-    //'title' => $title
-//]);
+    public function index()
+    {
+        //cách 1
+        $name = 'abbc';
+        $title = 'gôt_hoem';
+        return view(
+            'admin.pages.product_category.index',
+            [
+                'name' => $name,
+                'title' => $title
+            ]
+        );
 
         // cách 2
         // return view('admin.pages.product_category.index')
@@ -22,6 +26,6 @@ class ProductCategoryController extends Controller
         // ->with('title', $title);
 
         //cách 3 
-        return view('admin.pages.product_category.index', compact('name','title'));
+        // return view('admin.pages.product_category.index', compact('name','title'));
     }
 }
