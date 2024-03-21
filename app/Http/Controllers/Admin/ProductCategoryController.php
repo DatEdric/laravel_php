@@ -28,4 +28,15 @@ class ProductCategoryController extends Controller
         //cách 3 
         // return view('admin.pages.product_category.index', compact('name','title'));
     }
+     public function create() {
+        return view(
+            'admin.pages.product_category.create'
+        );
+     }
+
+     public function store(Request $request) {
+        $name  = $request-> name;
+        $status = $request->status; 
+        dd($name, $status);
+     }
 }
