@@ -1,33 +1,47 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashBoardController;
+use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\ShowBooksController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Admin\PublisherController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+//Ajax
+Route::post('ajaxPost/submitForm', 'AjaxController@submitForm');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+Route::get('/logon',[AdminController::class,'logon'])->name('logon');
+Route::post('/logon',[AdminController::class,'postlogon'])->name('admin.logon');
+Route::get('/logout',[AdminController::class,'logout'])->name('admin.logout');
+
+Route::prefix('admin')->middleware('admin')->group(function () {
+    Route::get('/', [DashBoardController::class, 'index'])->name('admin.index');
+    Route::resource('category', CategoryController::class);
+    Route::resource('book', BookController::class);
+    Route::resource('publisher',PublisherController::class);
+    Route::get('/book-restore',[BookController::class,'restore'])->name('book.trash');
+    Route::get('/book-restore/{id}',[BookController::class,'restorebook'])->name('book.restore');
+    Route::get('/book-force-delete/{id}',[BookController::class,'forcedelete'])->name('book.force-delete');
+
 });
 
-require __DIR__.'/auth.php';
+Route::get('/',[HomeController::class, 'index'])->name('index');
+Route::get('/shop',[HomeController::class, 'shopping'])->name('shop');
 
-require __DIR__.'/admin.php';
+Route::get('/login',[LoginController::class, 'login'])->name('login');
+Route::post('/login',[LoginController::class, 'postLogin']);
+Route::get('/register',[LoginController::class, 'register'])->name('register');
+Route::post('/register',[LoginController::class, 'postRegister']);
+Route::get('/logout',[LoginController::class, 'logout'])->name('admin.logout');
+
+Route::get('categories/{category}',[ShowBooksController::class,'show'])->name('categories.show');
+Route::get('book/{book}',[ShowBooksController::class,'detail'])->name('book.detail');
+
